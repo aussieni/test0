@@ -18,7 +18,7 @@ class TagsController < ApplicationController
 
     entity = Entity.new(entity_params)
     entity.save
-    params[:tags].each do |text|
+    params[:tags].sort.uniq.each do |text|
       Tag.new(entity: entity, text: text).save
     end
     
@@ -26,14 +26,31 @@ class TagsController < ApplicationController
   end
 
   def delete
-    old_entity = Entity.where(entity_params).first
-    if old_entity
-      old_entity.destroy
+    entity = Entity.where(entity_params).first
+    if entity
+      entity.destroy
       render nothing: true
     else
       render nothing: true, status: 404
     end
   end
+
+  def stats
+    tags = Tag.all.map { |t| t.text }.sort.uniq
+    counts = tags.map do |tag|
+      {tag: tag, count: Tag.where(text: tag).count}
+    end
+
+    render json: counts
+  end
+
+=begin      
+    entity = Entity.where(entity_params).first
+    if !entity
+      render nothing: true, status: 404
+      return
+    end
+=end
 
   private
 
