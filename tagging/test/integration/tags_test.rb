@@ -30,6 +30,14 @@ class TagsTest < ActionDispatch::IntegrationTest
     })
   end
 
+  test 'deleting entity' do
+    delete '/tags/thing/abc'
+    assert_response :success
+
+    get '/tags/thing/abc'
+    assert_response :missing
+  end
+
   def assert_json_response(hash)
     assert_equal hash, JSON.parse(response.body)
   end

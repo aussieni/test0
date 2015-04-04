@@ -25,6 +25,15 @@ class TagsController < ApplicationController
     render nothing: true
   end
 
+  def delete
+    old_entity = Entity.where(entity_params).first
+    if old_entity
+      old_entity.destroy
+    end
+
+    render nothing: true
+  end
+
   private
 
   def entity_params
