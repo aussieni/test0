@@ -6,7 +6,12 @@ class TagsTest < ActionDispatch::IntegrationTest
     assert_response :success
     get '/tags/thing/abc'
     assert_response :success
-    # !!! check response content
+    expected = {
+      'entity_type' => 'thing',
+      'entity_id' => 'abc',
+      'tags' => []
+    }
+    assert_equal expected, JSON.parse(response.body)
 
     get '/tags/thing/xyz'
     assert_response :missing
