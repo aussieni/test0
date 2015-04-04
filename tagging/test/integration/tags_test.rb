@@ -17,5 +17,18 @@ class TagsTest < ActionDispatch::IntegrationTest
     assert_response :missing
   end
 
+=begin
+  test 'replacing entity' do
+    post '/tag', '{"entity_type": "thing", "entity_id": "abc", "tags": ["nice"]}', CONTENT_TYPE: 'application/json'
+    post '/tag', '{"entity_type": "thing", "entity_id": "abc", "tags": ["cool"]}', CONTENT_TYPE: 'application/json'
+
+    expected = {
+      'entity_type' => 'thing',
+      'entity_id' => 'abc',
+      'tags' => ['cool']
+    }
+    assert_equal expected, JSON.parse(response.body)
+  end
+=end
   # !!! test replacing earlier entity
 end

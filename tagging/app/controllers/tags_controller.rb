@@ -1,16 +1,10 @@
 class TagsController < ApplicationController
   def show
-    entity = Entity.where(
-      entity_type: params[:entity_type],
-      entity_id: params[:entity_id]
-    ).first
+    entity = Entity.where(entity_params).first
     
     if entity
-      render json: {
-        entity_type: params[:entity_type],
-        entity_id: params[:entity_id],
-        tags: entity.tags.map { |t| t.text }.sort
-      }
+      tags = entity.tags.map { |t| t.text }.sort
+      render json: entity_params.merge({tags: tags})
     else
       render nothing: true, status: 404
     end
@@ -27,5 +21,11 @@ class TagsController < ApplicationController
     end
     
     render json: {}
+  end
+
+  private
+
+  def entity_params
+    params.permit(:entity_type, :entity_id)
   end
 end
