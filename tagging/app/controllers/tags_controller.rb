@@ -17,7 +17,7 @@ class TagsController < ApplicationController
       Tag.new(entity: entity, text: text).save
     end
     
-    render json: {}
+    render nothing: true
   end
 
   private
