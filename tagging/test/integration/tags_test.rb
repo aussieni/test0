@@ -36,6 +36,9 @@ class TagsTest < ActionDispatch::IntegrationTest
 
     get '/tags/thing/abc'
     assert_response :missing
+
+    delete '/tags/thing/xyz'
+    assert_response :missing
   end
 
   def assert_json_response(hash)

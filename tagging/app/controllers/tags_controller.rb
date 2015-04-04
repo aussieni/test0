@@ -29,9 +29,10 @@ class TagsController < ApplicationController
     old_entity = Entity.where(entity_params).first
     if old_entity
       old_entity.destroy
+      render nothing: true
+    else
+      render nothing: true, status: 404
     end
-
-    render nothing: true
   end
 
   private
