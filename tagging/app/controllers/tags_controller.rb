@@ -9,7 +9,7 @@ class TagsController < ApplicationController
       render json: {
         entity_type: params[:entity_type],
         entity_id: params[:entity_id],
-        tags: []
+        tags: entity.tags.map { |t| t.text }.sort
       }
     else
       render nothing: true, status: 404
@@ -22,6 +22,9 @@ class TagsController < ApplicationController
       entity_id: params[:entity_id]
     )
     entity.save
+    params[:tags].each do |text|
+      Tag.new(entity: entity, text: text).save
+    end
     
     render json: {}
   end
