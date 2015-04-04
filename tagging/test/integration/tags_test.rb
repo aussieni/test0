@@ -71,8 +71,6 @@ class TagsTest < ActionDispatch::IntegrationTest
     ])
   end
 
-  # !!! stats for single entity, as opposed to GET /tags?
-
   def assert_json_response(hash)
     assert_equal hash, JSON.parse(response.body)
   end
