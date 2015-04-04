@@ -11,10 +11,7 @@ class TagsController < ApplicationController
   end
 
   def create
-    entity = Entity.new(
-      entity_type: params[:entity_type],
-      entity_id: params[:entity_id]
-    )
+    entity = Entity.new(entity_params)
     entity.save
     params[:tags].each do |text|
       Tag.new(entity: entity, text: text).save
