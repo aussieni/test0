@@ -35,6 +35,16 @@ class TagsController < ApplicationController
     end
   end
 
+  def entity_stats
+    entity = Entity.where(entity_params).first
+    if !entity
+      render nothing: true, status: 404
+      return
+    end
+
+    render json: {tag_total: entity.tags.count}
+  end
+
   def stats
     tags = Tag.all.map { |t| t.text }.sort.uniq
     counts = tags.map do |tag|
@@ -43,14 +53,6 @@ class TagsController < ApplicationController
 
     render json: counts
   end
-
-=begin      
-    entity = Entity.where(entity_params).first
-    if !entity
-      render nothing: true, status: 404
-      return
-    end
-=end
 
   private
 

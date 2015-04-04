@@ -44,6 +44,16 @@ class TagsTest < ActionDispatch::IntegrationTest
     assert_response :missing
   end
 
+  test 'getting single-entity stats' do
+    get '/stats/widget/abc'
+    assert_json_response(
+      {'tag_total' => 2}
+    )
+
+    get '/stats/widget/xyz'
+    assert_response :missing
+  end
+
   test 'getting stats' do
     get '/stats'
     assert_json_response([
@@ -52,6 +62,7 @@ class TagsTest < ActionDispatch::IntegrationTest
     ])
 
     post '/tag', '{"entity_type": "widget", "entity_id": "xyz", "tags": ["cool", "awesome", "awesome"]}', CONTENT_TYPE: 'application/json'
+
     get '/stats'
     assert_json_response([
       {'tag' => 'awesome', 'count' => 1},
@@ -60,9 +71,7 @@ class TagsTest < ActionDispatch::IntegrationTest
     ])
   end
 
-  # !!! try getting stats after deletion
   # !!! stats for single entity, as opposed to GET /tags?
-  # stats with repeated tags
 
   def assert_json_response(hash)
     assert_equal hash, JSON.parse(response.body)
